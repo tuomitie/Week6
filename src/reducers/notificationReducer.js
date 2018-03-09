@@ -22,7 +22,7 @@ export const setNotification = (input) => {
 
 export const clearNotification = () => {
   return {
-    type: 'CLEAR_NOTIFICATION'
+    type: 'CLEAR_NOTIFICATION',
   }
 }
 
