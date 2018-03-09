@@ -12,7 +12,7 @@ class App extends React.Component {
         <Notification />
         <Filter />
         <AnecdoteList />
-        <AnecdoteForm  />
+        <AnecdoteForm />
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { filterContent } from '../reducers/filterReducer'
+import { connect } from 'react-redux'
 
 class Filter extends React.Component {
   componentDidMount() {
@@ -31,8 +32,18 @@ class Filter extends React.Component {
   }
 }
 
+const connFilter = (state) => {
+  return {
+    filter: state.filter
+  }
+}
+
 Filter.contextTypes = {
   store: PropTypes.object
 }
 
-export default Filter
+const ConnectedFilter = connect(
+  connFilter
+)(Filter)
+
+export default ConnectedFilter

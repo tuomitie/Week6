@@ -2,6 +2,7 @@ import React from 'react'
 import { voteFor } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 class AnecdoteList extends React.Component {
   componentDidMount() {
@@ -26,9 +27,9 @@ class AnecdoteList extends React.Component {
 
     render() {
       const anecdotes =
-        (this.context.store.getState().filter === {}) ?
-          this.context.store.getState().anecdotes :
-          this.context.store.getState().anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(this.context.store.getState().filter.toLowerCase()))
+        (this.props.filter === {}) ?
+          this.props.anecdotesToShow :
+          this.props.anecdotesToShow.filter(anecdote => anecdote.content.toLowerCase().includes(this.props.filter.toLowerCase()))
 
       console.log(anecdotes)
 
@@ -53,8 +54,19 @@ class AnecdoteList extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    anecdotesToShow: state.anecdotes,
+    filter: state.filter
+  }
+}
+
 AnecdoteList.contextTypes = {
   store: PropTypes.object
 }
 
-export default AnecdoteList
+const ConnectedAnecdoteList = connect(
+  mapStateToProps
+)(AnecdoteList)
+
+export default ConnectedAnecdoteList
