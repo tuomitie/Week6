@@ -3,12 +3,11 @@ import { createContent } from '../reducers/anecdoteReducer'
 import { connect } from 'react-redux'
 
 class AnecdoteForm extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const content = e.target.anecdote.value
-    this.props.store.dispatch(createContent(content))
-
-    e.target.anecdote.value = ''
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const content = event.target.anecdote.value
+    this.props.createContent(content)
+    event.target.anecdote.value = ''
   }
   render() {
     return (
@@ -23,14 +22,7 @@ class AnecdoteForm extends React.Component {
   }
 }
 
-const connAnecdoteForm = (state) => {
-  return {
-    anecdoteform: state.anecdoteform
-  }
-}
-
-const ConnectedAnecdoteForm = connect(
-  connAnecdoteForm
+export default connect(
+  null,
+  { createContent }
 )(AnecdoteForm)
-
-export default ConnectedAnecdoteForm

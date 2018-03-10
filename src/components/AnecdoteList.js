@@ -1,42 +1,25 @@
 import React from 'react'
 import { voteFor } from '../reducers/anecdoteReducer'
 import { setNotification, clearNotification } from '../reducers/notificationReducer'
-import PropTypes from 'prop-types'
+
 import { connect } from 'react-redux'
 
 class AnecdoteList extends React.Component {
-  componentDidMount() {
-    const { store } = this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
 
     handleVote = (anecdote) => {
-      this.context.store.dispatch(voteFor(anecdote))
-      this.context.store.dispatch(setNotification({ text: `voted for ${anecdote.content}` }))
+      this.props.voteFor(anecdote)
+      this.props.setNotification({ text: `voted for ${anecdote.content}` })
       setTimeout(
-        () => this.context.store.dispatch(clearNotification()),
+        () => this.props.clearNotification(),
         5000
       )
     }
 
     render() {
-      const anecdotes =
-        (this.props.filter === {}) ?
-          this.props.anecdotesToShow :
-          this.props.anecdotesToShow.filter(anecdote => anecdote.content.toLowerCase().includes(this.props.filter.toLowerCase()))
-
-      console.log(anecdotes)
-
       return (
         <div>
           <h2>Anecdotes</h2>
-          {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+          {this.props.anecdotesToShow.map(anecdote =>
             <div key={anecdote.id}>
               <div>
                 {anecdote.content}
@@ -56,17 +39,24 @@ class AnecdoteList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    anecdotesToShow: state.anecdotes,
+    anecdotesToShow: anecdotesToShow(state.anecdotes, state.filter),
+    anecdotes: state.anecdotes,
     filter: state.filter
   }
 }
 
-AnecdoteList.contextTypes = {
-  store: PropTypes.object
+const anecdotesToShow = (anecdotes, filter) => {
+  anecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
+  return anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+}
+
+const mapDispatchToProps = {
+  voteFor, setNotification, clearNotification
 }
 
 const ConnectedAnecdoteList = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(AnecdoteList)
 
 export default ConnectedAnecdoteList

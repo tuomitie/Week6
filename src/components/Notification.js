@@ -3,16 +3,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 class Notification extends React.Component {
-  componentDidMount() {
-    const { store } = this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
   render() {
 
     const style = {

@@ -4,20 +4,9 @@ import { filterContent } from '../reducers/filterReducer'
 import { connect } from 'react-redux'
 
 class Filter extends React.Component {
-  componentDidMount() {
-    const { store } = this.context
-    this.unsubscribe = store.subscribe(() =>
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
   handleChange = (event) => {
     event.preventDefault
-    this.context.store.dispatch(filterContent(event.target.value))
+    this.props.filterContent(event.target.value)
   }
   render() {
     const style = {
@@ -38,12 +27,13 @@ const connFilter = (state) => {
   }
 }
 
-Filter.contextTypes = {
-  store: PropTypes.object
+const mapDispatchToProps = {
+  filterContent
 }
 
 const ConnectedFilter = connect(
-  connFilter
+  connFilter,
+  mapDispatchToProps
 )(Filter)
 
 export default ConnectedFilter
