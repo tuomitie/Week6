@@ -19,18 +19,17 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   if (action.type==='VOTE') {
     const old = state.filter(a => a.id !==action.id)
     const voted = state.find(a => a.id === action.id)
-
     return [...old, { ...voted, votes: voted.votes+1 } ]
   }
   if (action.type === 'CREATE') {
-    return [...state, { content: action.content, id: getId(), votes:0 }]
+    return [...state, action.content]
   }
   if (action.type === 'INITIALIZE') {
-    return state
+    return action.data
   }
   return state
 }
@@ -49,9 +48,10 @@ export const createContent = (content) => {
   }
 }
 
-export const getInitial = () => {
+export const anecdoteInitialization = (data) => {
   return {
-    type: 'INITIALIZE'
+    type: 'INITIALIZE',
+    data
   }
 }
 

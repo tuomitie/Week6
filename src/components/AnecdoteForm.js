@@ -1,14 +1,28 @@
 import React from 'react'
 import { createContent } from '../reducers/anecdoteReducer'
 import { connect } from 'react-redux'
+import anecdoteService from '../services/anecdotes'
 
 class AnecdoteForm extends React.Component {
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    this.props.createContent(content)
     event.target.anecdote.value = ''
+    const anecdoteObject = this.asObject(content)
+    console.log(anecdoteObject)
+    const newAnecdote = await anecdoteService.createNew(anecdoteObject)
+    this.props.createContent(newAnecdote)
   }
+
+  asObject = (anecdote) => {
+    const idValue = (100000*Math.random()).toFixed(0)
+    return {
+      content: anecdote,
+      id: idValue,
+      votes: 0
+    }
+  }
+
   render() {
     return (
       <div>
