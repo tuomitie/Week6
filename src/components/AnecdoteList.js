@@ -1,6 +1,6 @@
 import React from 'react'
 import { voteFor } from '../reducers/anecdoteReducer'
-import { setNotification, clearNotification } from '../reducers/notificationReducer'
+import { combinedNotification, setNotification, clearNotification } from '../reducers/notificationReducer'
 
 import { connect } from 'react-redux'
 
@@ -8,11 +8,7 @@ class AnecdoteList extends React.Component {
 
     handleVote = (anecdote) => {
       this.props.voteFor(anecdote)
-      this.props.setNotification({ text: `voted for ${anecdote.content}` })
-      setTimeout(
-        () => this.props.clearNotification(),
-        5000
-      )
+      this.props.combinedNotification({ text: `voted for ${anecdote.content}` }, 5)
     }
 
     render() {
@@ -51,7 +47,7 @@ const anecdotesToShow = (anecdotes, filter) => {
 }
 
 const mapDispatchToProps = {
-  voteFor, setNotification, clearNotification
+  voteFor, setNotification, clearNotification, combinedNotification
 }
 
 const ConnectedAnecdoteList = connect(

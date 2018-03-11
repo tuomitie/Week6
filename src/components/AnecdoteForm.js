@@ -10,8 +10,8 @@ class AnecdoteForm extends React.Component {
     event.target.anecdote.value = ''
     const anecdoteObject = this.asObject(content)
     console.log(anecdoteObject)
-    const newAnecdote = await anecdoteService.createNew(anecdoteObject)
-    this.props.createContent(newAnecdote)
+ //   const newAnecdote = this.props.createNew(anecdoteObject)
+    this.props.createContent(anecdoteObject)
   }
 
   asObject = (anecdote) => {
